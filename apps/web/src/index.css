@@ -1,0 +1,161 @@
+/**
+ * Global CSS reset and design system tokens.
+ *
+ * CSS Custom Properties are derived from @ae-motion-tools/ui-tokens.
+ * Phase 1 will expand this with the full component design system.
+ */
+
+/* ── Google Fonts fallback strategy ─────────────────────────────────────────── */
+@font-face {
+  font-family: 'Inter fallback';
+  src: local('Arial');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+/* ── CSS Custom Properties (design tokens) ──────────────────────────────────── */
+:root {
+  /* Surface */
+  --color-surface-base: hsl(224, 15%, 8%);
+  --color-surface-canvas: hsl(224, 13%, 11%);
+  --color-surface-panel: hsl(224, 12%, 14%);
+  --color-surface-elevated: hsl(224, 11%, 18%);
+  --color-surface-interactive: hsl(224, 10%, 22%);
+  --color-surface-interactive-hover: hsl(224, 10%, 26%);
+
+  /* Brand */
+  --color-brand-primary: hsl(258, 90%, 66%);
+  --color-brand-primary-hover: hsl(258, 90%, 72%);
+  --color-brand-primary-muted: hsl(258, 50%, 30%);
+  --color-brand-secondary: hsl(192, 85%, 55%);
+
+  /* Text */
+  --color-text-primary: hsl(220, 20%, 95%);
+  --color-text-secondary: hsl(220, 10%, 65%);
+  --color-text-tertiary: hsl(220, 8%, 45%);
+  --color-text-disabled: hsl(220, 6%, 30%);
+
+  /* Border */
+  --color-border-subtle: hsl(224, 12%, 18%);
+  --color-border-default: hsl(224, 10%, 24%);
+  --color-border-strong: hsl(224, 8%, 35%);
+  --color-border-focus: hsl(258, 90%, 66%);
+
+  /* Semantic */
+  --color-success: hsl(145, 65%, 50%);
+  --color-warning: hsl(38, 95%, 55%);
+  --color-error: hsl(4, 85%, 57%);
+
+  /* Curve editor */
+  --color-curve-primary: hsl(258, 90%, 66%);
+  --color-curve-secondary: hsl(192, 85%, 55%);
+  --color-curve-grid: hsl(224, 10%, 20%);
+
+  /* Typography */
+  --font-sans: 'Inter', 'Inter fallback', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing base unit: 4px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px hsl(224 15% 4% / 0.4);
+  --shadow-md: 0 4px 12px hsl(224 15% 4% / 0.5);
+  --shadow-lg: 0 8px 24px hsl(224 15% 4% / 0.6);
+  --shadow-glow: 0 0 20px hsl(258 90% 66% / 0.3);
+
+  /* Transitions */
+  --transition-fast: 100ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden; /* App is a full-screen tool */
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Typography utilities ────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+}
+
+/* ── Focus styles ────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}

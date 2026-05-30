@@ -1,0 +1,21 @@
+{
+  "name": "@ae-motion-tools/cep-panel",
+  "version": "0.0.1",
+  "private": true,
+  "description": "AE Motion Tools — Adobe CEP extension panel for After Effects integration",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --outDir dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rimraf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@ae-motion-tools/ae-serializer": "workspace:*",
+    "@ae-motion-tools/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  }
+}

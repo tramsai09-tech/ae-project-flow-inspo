@@ -4,6 +4,7 @@ import { BezierCanvas } from './components/BezierCanvas.tsx';
 import { CoordinatePanel } from './components/CoordinatePanel.tsx';
 import { PresetPanel } from './components/PresetPanel.tsx';
 import { AnimationPreview } from './components/AnimationPreview.tsx';
+import { VelocityGraph } from './components/VelocityGraph.tsx';
 
 // ── CSS output helper ──────────────────────────────────────────────────────────
 
@@ -96,6 +97,7 @@ export default function App() {
         {/* Sidebar — right column */}
         <aside className="sidebar" aria-label="Editor controls">
           <CoordinatePanel controlPoints={controlPoints} />
+          <VelocityGraph controlPoints={controlPoints} />
           <CSSOutputPanel value={cssValue} />
           <PresetPanel onApply={applyPreset} />
           <AnimationPreview controlPoints={controlPoints} />

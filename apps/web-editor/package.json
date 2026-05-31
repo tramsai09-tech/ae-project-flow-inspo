@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ae-motion-tools/curve-engine": "workspace:*",
+    "@ae-motion-tools/preset-library": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

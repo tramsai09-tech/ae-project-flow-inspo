@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import type { ControlPoints, Point2D } from '@ae-motion-tools/curve-engine';
-import type { Preset } from '../types.ts';
+import type { Preset } from '@ae-motion-tools/preset-library';
 
 /** Ease-in-out (CSS default) as the editor's starting state */
 const DEFAULT_POINTS: ControlPoints = [

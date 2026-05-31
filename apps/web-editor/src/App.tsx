@@ -99,7 +99,7 @@ export default function App() {
           <CoordinatePanel controlPoints={controlPoints} />
           <VelocityGraph controlPoints={controlPoints} />
           <CSSOutputPanel value={cssValue} />
-          <PresetPanel onApply={applyPreset} />
+          <PresetPanel onApply={applyPreset} currentPoints={[p1.x, p1.y, p2.x, p2.y]} />
           <AnimationPreview controlPoints={controlPoints} />
         </aside>
       </main>

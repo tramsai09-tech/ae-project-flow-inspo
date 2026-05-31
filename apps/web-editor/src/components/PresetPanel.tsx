@@ -1,17 +1,5 @@
-import type { Preset } from '../types.ts';
-
-// ── Built-in presets ───────────────────────────────────────────────────────────
-
-export const PRESETS: Preset[] = [
-  { id: 'linear',      name: 'Linear',      p1: { x: 0,    y: 0    }, p2: { x: 1,     y: 1    } },
-  { id: 'ease',        name: 'Ease',        p1: { x: 0.25, y: 0.1  }, p2: { x: 0.25,  y: 1    } },
-  { id: 'ease-in',     name: 'Ease In',     p1: { x: 0.42, y: 0    }, p2: { x: 1,     y: 1    } },
-  { id: 'ease-out',    name: 'Ease Out',    p1: { x: 0,    y: 0    }, p2: { x: 0.58,  y: 1    } },
-  { id: 'ease-io',     name: 'Ease In-Out', p1: { x: 0.42, y: 0    }, p2: { x: 0.58,  y: 1    } },
-  { id: 'spring',      name: 'Spring',      p1: { x: 0.68, y:-0.55 }, p2: { x: 0.265, y: 1.55 } },
-  { id: 'back-in',     name: 'Back In',     p1: { x: 0.6,  y:-0.28 }, p2: { x: 0.735, y: 1.35 } },
-  { id: 'sharp',       name: 'Sharp',       p1: { x: 0.4,  y: 0    }, p2: { x: 1,     y: 1    } },
-];
+import React, { useState, useEffect, useRef } from 'react';
+import { PresetStorage, Preset } from '@ae-motion-tools/preset-library';
 
 // ── Mini curve preview (inline SVG per button) ─────────────────────────────────
 
@@ -51,26 +39,122 @@ function MiniCurve({ preset }: { preset: Preset }) {
 
 interface PresetPanelProps {
   onApply: (preset: Preset) => void;
+  currentPoints: [number, number, number, number]; // [p1.x, p1.y, p2.x, p2.y]
 }
 
-export function PresetPanel({ onApply }: PresetPanelProps) {
+export function PresetPanel({ onApply, currentPoints }: PresetPanelProps) {
+  const [presets, setPresets] = useState<Preset[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const loadPresets = () => {
+    setPresets(PresetStorage.loadAll());
+  };
+
+  useEffect(() => {
+    loadPresets();
+  }, []);
+
+  const handleSave = () => {
+    const name = prompt('Enter a name for the preset:');
+    if (!name) return;
+    
+    const id = name.toLowerCase().replace(/\s+/g, '-');
+    const [p1x, p1y, p2x, p2y] = currentPoints;
+    
+    try {
+      PresetStorage.savePreset({
+        id,
+        name,
+        p1: { x: p1x, y: p1y },
+        p2: { x: p2x, y: p2y },
+        isBuiltIn: false
+      });
+      loadPresets();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const handleDelete = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to delete this preset?')) {
+      try {
+        PresetStorage.deletePreset(id);
+        loadPresets();
+      } catch (err: any) {
+        alert(err.message);
+      }
+    }
+  };
+
+  const handleExport = () => {
+    const json = PresetStorage.exportJSON();
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ae-motion-presets.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        PresetStorage.importJSON(event.target?.result as string);
+        loadPresets();
+      } catch (err: any) {
+        alert('Failed to import JSON: ' + err.message);
+      }
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <div className="panel">
       <div className="panel-head">
         <span className="panel-title">Presets</span>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <button className="btn-icon" onClick={handleSave} title="Save current curve as preset" style={{ padding: '2px 6px', height: 'auto', fontSize: '10px' }}>Save</button>
+          <button className="btn-icon" onClick={handleExport} title="Export user presets" style={{ padding: '2px 6px', height: 'auto', fontSize: '10px' }}>Export</button>
+          <button className="btn-icon" onClick={() => fileInputRef.current?.click()} title="Import user presets" style={{ padding: '2px 6px', height: 'auto', fontSize: '10px' }}>Import</button>
+          <input type="file" accept=".json" style={{ display: 'none' }} ref={fileInputRef} onChange={handleImport} />
+        </div>
       </div>
 
       <div className="preset-grid">
-        {PRESETS.map((preset) => (
-          <button
-            key={preset.id}
-            className="preset-btn"
-            onClick={() => onApply(preset)}
-            title={`Apply ${preset.name} preset`}
-          >
-            <MiniCurve preset={preset} />
-            <span>{preset.name}</span>
-          </button>
+        {presets.map((preset) => (
+          <div key={preset.id} style={{ position: 'relative' }}>
+            <button
+              className="preset-btn"
+              style={{ width: '100%' }}
+              onClick={() => onApply(preset)}
+              title={`Apply ${preset.name} preset`}
+            >
+              <MiniCurve preset={preset} />
+              <span>{preset.name}</span>
+            </button>
+            {!preset.isBuiltIn && (
+              <button 
+                onClick={(e) => handleDelete(preset.id, e)}
+                style={{ 
+                  position: 'absolute', top: '2px', right: '2px', 
+                  background: 'var(--bg-panel)', color: 'var(--text-3)', 
+                  border: '1px solid var(--border)', borderRadius: '4px', 
+                  width: '16px', height: '16px', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '10px' 
+                }}
+                title="Delete preset"
+              >
+                ×
+              </button>
+            )}
+          </div>
         ))}
       </div>
     </div>

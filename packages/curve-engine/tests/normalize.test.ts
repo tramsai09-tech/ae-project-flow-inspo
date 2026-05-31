@@ -3,6 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { evaluatePoint } from '../src/evaluate.ts';
 import {
   clampHandles,
   getBoundingBox,
@@ -292,7 +293,6 @@ describe('toPolyline', () => {
     // Every even index is x, every odd is y
     for (let i = 0; i < poly.length; i += 2) {
       const t = (i / 2) / 4;
-      const { evaluatePoint } = await import('../src/evaluate.ts');
       const p = evaluatePoint(easeIO, t);
       expect(poly[i]).toBeCloseTo(p.x, 6);
       expect(poly[i + 1]).toBeCloseTo(p.y, 6);

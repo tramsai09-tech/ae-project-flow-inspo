@@ -3,6 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { evaluateEasing } from '../src/evaluate.ts';
 import {
   arcLength,
   buildLUT,
@@ -176,7 +177,6 @@ describe('lookupY', () => {
 
   it('lookupY ≈ evaluateEasing for x ∈ (0, 1) with high-resolution LUT', () => {
     // With resolution=500, max error should be < 0.001
-    const { evaluateEasing } = await import('../src/evaluate.ts');
     const lut = buildLUT(easeIO, 500);
     for (const x of [0.1, 0.2, 0.3, 0.5, 0.7, 0.8, 0.9]) {
       const lutY = lookupY(lut, x);

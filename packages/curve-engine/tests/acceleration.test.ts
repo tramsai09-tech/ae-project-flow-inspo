@@ -3,6 +3,8 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { evaluateSecondDerivative } from '../src/evaluate.ts';
+import { tangentAtT } from '../src/velocity.ts';
 import {
   accelerationAtT,
   accelerationCurve,
@@ -57,7 +59,6 @@ describe('accelerationAtT', () => {
   });
 
   it('equals evaluateSecondDerivative output', () => {
-    const { evaluateSecondDerivative } = await import('../src/evaluate.ts');
     for (const t of [0, 0.25, 0.5, 0.75, 1]) {
       const a = accelerationAtT(easeIO, t);
       const d2 = evaluateSecondDerivative(easeIO, t);
@@ -168,7 +169,6 @@ describe('radiusOfCurvatureAtT', () => {
 
 describe('normalAtT', () => {
   it('normal is perpendicular to tangent (dot product ≈ 0)', () => {
-    const { tangentAtT } = await import('../src/velocity.ts');
     for (const t of [0.1, 0.3, 0.5, 0.7, 0.9]) {
       const T = tangentAtT(easeIO, t);
       const N = normalAtT(easeIO, t);

@@ -3,6 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { evaluateDerivative } from '../src/evaluate.ts';
 import {
   easingVelocity,
   speedAtT,
@@ -48,7 +49,6 @@ describe('velocityAtT', () => {
   });
 
   it('equals evaluateDerivative output', () => {
-    const { evaluateDerivative } = await import('../src/evaluate.ts');
     for (const t of [0, 0.33, 0.67, 1]) {
       const v = velocityAtT(easeIO, t);
       const d = evaluateDerivative(easeIO, t);

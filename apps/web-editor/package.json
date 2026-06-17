@@ -15,7 +15,8 @@
     "@ae-motion-tools/curve-engine": "workspace:*",
     "@ae-motion-tools/preset-library": "workspace:*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-resizable-panels": "^4.11.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.14",

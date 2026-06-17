@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+  <Extension Id="com.aemotiontools.panel">
+    <HostList>
+      <!-- Allow debugging on localhost:8088 in Chrome -->
+      <Host Name="AEFT" Port="8088" />
+    </HostList>
+  </Extension>
+</ExtensionList>

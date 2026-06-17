@@ -13,5 +13,4 @@
  *   - ExpressionGenerator  (generate AE JS expressions from curves)
  */
 
-// Placeholder — exports will be added in Phase 4
-export {};
+export { convertBezierToAeEase } from './bezier-converter';

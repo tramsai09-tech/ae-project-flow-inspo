@@ -1,0 +1,10 @@
+{
+  "name": "@ae-motion-tools/ae-extension",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:panel": "cd panel && pnpm run build",
+    "install-cep": "node scripts/install.js",
+    "deploy:local": "pnpm build:panel && pnpm install-cep"
+  }
+}

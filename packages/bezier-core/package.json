@@ -12,9 +12,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --passWithNoTests",
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {

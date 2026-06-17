@@ -74,8 +74,8 @@ describe('speedAtT', () => {
     }
   });
 
-  it('ease-in: speed at t=1 > speed at t=0 (fast end)', () => {
-    expect(speedAtT(easeIn, 1)).toBeGreaterThan(speedAtT(easeIn, 0));
+  it('ease-in: speed at t=1 is 0 because P2=P3', () => {
+    expect(speedAtT(easeIn, 1)).toBeCloseTo(0, 5);
   });
 
   it('equals magnitude of velocityAtT', () => {

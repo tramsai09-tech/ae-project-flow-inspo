@@ -128,6 +128,17 @@ function HighlightedText({ text, highlight }: { text: string; highlight: string 
 export function PresetPanel({ onApply, currentPoints }: PresetPanelProps) {
   const [presets, setPresets] = useState<Preset[]>(() => {
     try {
+      const win = window as any;
+      if (win.CSInterface && win.cep) {
+        const cs = new win.CSInterface();
+        const userDataPath = cs.getSystemPath('userData');
+        const path = `${userDataPath}/aemotion_presets.json`;
+        const result = win.cep.fs.readFile(path);
+        if (result.err === 0) {
+          return JSON.parse(result.data);
+        }
+      }
+
       const stored = localStorage.getItem('aemotion_presets');
       if (stored) return JSON.parse(stored);
     } catch (e) {
@@ -146,6 +157,13 @@ export function PresetPanel({ onApply, currentPoints }: PresetPanelProps) {
 
   useEffect(() => {
     try {
+      const win = window as any;
+      if (win.CSInterface && win.cep) {
+        const cs = new win.CSInterface();
+        const userDataPath = cs.getSystemPath('userData');
+        const path = `${userDataPath}/aemotion_presets.json`;
+        win.cep.fs.writeFile(path, JSON.stringify(presets));
+      }
       localStorage.setItem('aemotion_presets', JSON.stringify(presets));
     } catch (e) {
       console.warn('Failed to save presets', e);
